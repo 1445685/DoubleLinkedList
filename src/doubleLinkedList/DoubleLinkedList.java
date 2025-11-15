@@ -5,7 +5,6 @@ public class DoubleLinkedList {
 	private Node firstNode = null;
 	private Node lastNode = null;
 	private Node actualNode = null;
-	private boolean nextNodeChecked = false;
 
 	// ------ constructors
 	public DoubleLinkedList() {}
@@ -19,7 +18,6 @@ public class DoubleLinkedList {
 	}
 
 	// ------ methods
-	// +++++++++ adds
 	public void add(Node newNode) {
 		newNode.setNextNode(this.actualNode.getNextNode());
 		this.actualNode.setNextNode(newNode);
@@ -27,15 +25,25 @@ public class DoubleLinkedList {
 	public void add(int value) {
 		this.add(new Node(value));
 	}
-	
+	public void add(Node n, int i) throws IndexOutOfBoundsException {
+		if (i > this.getLength()) 
+			throw new IndexOutOfBoundsException("Index greater than the number of items in the list");
+		
+		this.actualNode = this.firstNode;
+		
+		for (int index = 1; index <= i; index++) {
+			this.actualNode = this.actualNode.getNextNode();
+		}
+		
+		this.add(n);
+	}
 	public void addFirst(Node n) {
 		n.setNextNode(this.firstNode);
 		this.setFirstNode(n);
 	}
 	public void addFirst(int value) {
 		this.addFirst(new Node(value));
-	}
-	
+	}	
 	public void addLast(Node n) {
 		n.setPreviousNode(this.getLastNode());
 		this.setLastNode(n);
@@ -44,7 +52,6 @@ public class DoubleLinkedList {
 		this.addLast(new Node(value));
 	}
 
-	// +++++++++ removes
 	public void remove() {
 		Node aux = this.actualNode;
 		this.actualNode = this.actualNode.getNextNode();
@@ -52,40 +59,42 @@ public class DoubleLinkedList {
 		aux.getNextNode().setPreviousNode(aux.getPreviousNode());
 		aux.getPreviousNode().setNextNode(aux.getNextNode());
 	}
+	public void remove(int i) throws IndexOutOfBoundsException{
+		if (i > this.lenght) 
+			throw new IndexOutOfBoundsException("Index greater than the number of items in the list");
+		
+		this.actualNode = this.firstNode;
+		
+		for(int index = 1; index <= i; index++) {
+			this.actualNode = this.actualNode.getNextNode();
+		}
+		
+		this.remove();
+	}
 	public void romoveFirst() {
 		this.setFirstNode(this.getFirstNode().getNextNode());
 	}
 	public void removeLast() {
 		this.setLastNode(this.getLastNode().getPreviousNode());
 	}
-
-	// +++++++++ modifies
-	public void modify(int newValue) {
-		this.actualNode.setValue(newValue);
-	}
-	public void modifyFirst(int newValue) {
-		this.firstNode.setValue(newValue);
-	}
-	public void modifyLast(int newValue) {
-		this.lastNode.setValue(newValue);
-	}
 	
-	// +++++++++ clean
+	public int search(int i) throws IndexOutOfBoundsException{
+		if (i > this.lenght) 
+			throw new IndexOutOfBoundsException("Index greater than the number of items in the list");
+		
+		this.actualNode = this.firstNode;
+		
+		for(int index = 0; index < i; index++) {
+			this.actualNode = this.actualNode.getNextNode();
+		}
+		
+		return this.actualNode.getValue();
+	}
+
 	public void cleanList() {
 		this.firstNode = null;
 		this.lastNode = null;
 		this.actualNode = null;
-	}
-	
-	// ------ Iterator pseudo-implementation
-	// TODO improve and complete implementation of iterator
-	public boolean hasNext() {
-		this.nextNodeChecked = true;
-		return this.actualNode.getNextNode() == null;
-	}
-	public Node nextNode() {
-		this.nextNodeChecked = false;
-		return this.actualNode = this.actualNode.getNextNode();
 	}
 	
 	// ------ gets and sets
@@ -100,8 +109,6 @@ public class DoubleLinkedList {
 	public Node getActualNode() {return this.actualNode;}
 	public void setActualNode(Node newActualNode) {this.actualNode = newActualNode;}
 	
-	public boolean getNextNodeChecked() {return this.nextNodeChecked;} 
-	
 	// ------ toString and equals
 	public String toString() {
 		return "[length: " + this.lenght +
@@ -109,14 +116,25 @@ public class DoubleLinkedList {
 				"\n" + "\tlast node: " + this.lastNode +
 				"]\n";
 	}
-	// TODO Finish equals method
-	/*
+	
 	public boolean equals(Object otherObject) {
 		if (this == otherObject) {return true;}
 		if (otherObject == null) {return false;}
 		if (!(otherObject instanceof DoubleLinkedList other)) {return false;}
+		if (this.lenght != other.getLength()) {return false;}
 		
+		boolean result = false;
+		int index = 0;
 		
+		this.actualNode = this.firstNode;
+		Node otherActualNode = other.getActualNode();
+		
+		while (index < this.lenght && !result) {
+			if (this.actualNode.getValue() != otherActualNode.getValue()) {return false;}
+			
+			this.actualNode = this.actualNode.getNextNode();
+			otherActualNode = otherActualNode.getNextNode();
+		}
+		return true;
 	}
-	*/
 }
