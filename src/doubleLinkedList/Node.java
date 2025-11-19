@@ -8,17 +8,17 @@ package doubleLinkedList;
  * @version 0.5
  * */
 
-public class Node {
-	private int value;
-	private Node next = null;
-	private Node previous = null;
+public class Node<T> {
+	private T value;
+	private Node<T> next = null;
+	private Node<T> previous = null;
 	
 	/**
 	 * Build a new node with only the node value
 	 * 
 	 * @param value Value that the node will have
 	 * */
-	public Node(int value) {
+	public Node(T value) {
 		this.value = value;
 	}
 	/**
@@ -27,7 +27,7 @@ public class Node {
 	 * @param value Value contained in the node
 	 * @param previous Node previous to the node being created
 	 * */
-	public Node(int value, Node previous) {
+	public Node(T value, Node<T> previous) {
 		this.value = value;
 		this.previous = previous;
 	}
@@ -38,7 +38,7 @@ public class Node {
 	 * @param previous Node previous to the node being created
 	 * @param next Node next to the node being created
 	 * */
-	public Node(int value, Node previous, Node next) {
+	public Node(T value, Node<T> previous, Node<T> next) {
 		this.value = value;
 		this.previous = previous;
 		this.next = next;
@@ -49,39 +49,39 @@ public class Node {
 	 * 
 	 * @return Returns the value of the node
 	 * */
-	public int getValue() {return this.value;}
+	public T getValue() {return this.value;}
 	/**
 	 * Modifies the value contained by the node
 	 * 
 	 * @param newValue New value that will contain node 
 	 * */
-	public void setValue(int newValue) {this.value = newValue;}
+	public void setValue(T newValue) {this.value = newValue;}
 	
 	/**
 	 * Get a reference to the next node
 	 * 
 	 * @return Reference to the next node of the current node
 	 * */
-	public Node getNextNode() {return this.next;}
+	public Node<T> getNextNode() {return this.next;}
 	/**
 	 * Modify the following node of the current node
 	 * 
 	 * @param newNextNode New reference to a node
 	 * */
-	public void setNextNode(Node newNextNode) {this.next = newNextNode;}
+	public void setNextNode(Node<T> newNextNode) {this.next = newNextNode;}
 	
 	/**
 	 * Gets the node referenced as the one before the current node
 	 * 
 	 * @return Reference to a node
 	 * */
-	public Node getPreviousNode() {return this.previous;}
+	public Node<T> getPreviousNode() {return this.previous;}
 	/**
 	 * Modify the reference to the previous node
 	 * 
 	 * @param newPreviousNode New reference to a node
 	 * */
-	public void setPreviousNode(Node newPreviousNode) {this.previous = newPreviousNode;}
+	public void setPreviousNode(Node<T> newPreviousNode) {this.previous = newPreviousNode;}
 	
 	/**
 	 * Create a string with/display the most important information about the node, the value
@@ -102,6 +102,6 @@ public class Node {
 		if (this == otherObject) {return true;}
 		if (otherObject == null) {return false;}
 		if (!(otherObject instanceof Node other)) {return false;}
-		return this.value == other.getValue();
+		return this.value.equals(other.getValue());
 	}
 }
