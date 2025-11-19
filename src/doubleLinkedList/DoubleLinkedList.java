@@ -47,12 +47,11 @@ public class DoubleLinkedList {
 	 * @param node Node being searched for in the list
 	 * 
 	 * @return Returns the index at which the node appears in the list
-	 *  If the node does not exist in the list, returns -1
-	 *  
-	 * @throws IllegalStateException Throws an exception when trying to access an empty list.
+	 *  If the node does not exist in the list, returns -1;
+	 *  If the list is empty, return 0.
 	 * */
-	private int existsInList(Node node) throws IllegalStateException {
-		if (this.lenght == 0) {throw new IllegalStateException("Empty list");}
+	private int existsInList(Node node) {
+		if (this.lenght == 0) {return 0;}
 		
 		int index = 1;
 		Node aux = this.getFirstNode();
@@ -66,6 +65,33 @@ public class DoubleLinkedList {
 		
 		return -1;
 	}
+	/**
+	 * Check if the list is empty or has at least one node 
+	 * 
+	 * @return Returns a Boolean specifying whether the size of the list is equal to zero (true) or not (false)
+	 * */
+	private boolean emptyList() {
+		return this.getLength() == 0;
+	}
+	/**
+	 * Initialize the list with the specified node
+	 * 
+	 * @param node Node that will initialize the list
+	 * */
+	public void initializeList(Node node) {
+		node.setNextNode(null);
+		node.setPreviousNode(null);
+		
+		this.firstNode = node;
+		this.lastNode = node;
+	}
+	/**
+	 * Clears the list by leaving it without references in the firstNode and lastNode attributes.
+	 * */
+	public void cleanList() {
+		this.firstNode = null;
+		this.lastNode = null;
+	}
 	
 	/**
 	 * Insert a node at the first position in the list and shift the other elements
@@ -75,9 +101,8 @@ public class DoubleLinkedList {
 	 * @return Nothing at the moment
 	 * */
 	public void insertFirstNode(Node newNode) {
-		if (this.lenght == 0) {
-			this.firstNode = newNode;
-			this.lastNode = newNode;
+		if (this.emptyList()) {
+			this.initializeList(newNode);
 		} else {
 			newNode.setNextNode(this.getFirstNode());
 			this.getFirstNode().setPreviousNode(newNode);
@@ -94,9 +119,8 @@ public class DoubleLinkedList {
 	 * @return Nothing at the moment
 	 * */
 	public void insertLastNode(Node newNode) {
-		if (this.lenght == 0) {
-			this.firstNode = newNode;
-			this.lastNode = newNode;
+		if (this.emptyList()) {
+			this.initializeList(newNode);
 		} else {
 			this.getLastNode().setNextNode(newNode);
 			newNode.setPreviousNode(this.getLastNode());
@@ -115,9 +139,12 @@ public class DoubleLinkedList {
 	 * 
 	 * @throws NoSuchElementException Exception indicating that the node used as a reference does not exist in the list
 	 * */
-	public void insertBeforeNode(Node node, Node newNode) throws NoSuchElementException {
+	public void insertBeforeNode(Node node, Node newNode) throws NoSuchElementException, IllegalStateException {
 		int indexNode = this.existsInList(node);
-		if (indexNode == -1) {throw new NoSuchElementException("The node indica does not exist in the list");}
+		
+		if (indexNode == 0) {throw new IllegalStateException("There are no items in the list");}
+		if (indexNode == -1) {throw new NoSuchElementException("The specified node does not exist in the list");}
+		
 		if (indexNode == 1) {
 			this.insertFirstNode(newNode);
 		} else {
@@ -142,9 +169,12 @@ public class DoubleLinkedList {
 	 * 
 	 * @throws NoSuchElementException Exception indicating that the node used as a reference does not exist in the list
 	 * */
-	public void insertAfterNode(Node node, Node newNode) throws NoSuchElementException {
+	public void insertAfterNode(Node node, Node newNode) throws NoSuchElementException, IllegalStateException {
 		int indexNode = this.existsInList(node);
-		if (indexNode == -1) {throw new NoSuchElementException("The node indica does not exist in the list");}
+
+		if (indexNode == 0) {throw new IllegalStateException("There are no items in the list");}
+		if (indexNode == -1) {throw new NoSuchElementException("The specified node does not exist in the list");}
+		
 		if (indexNode == this.getLength()) {
 			this.insertLastNode(newNode);
 		} else {
@@ -170,8 +200,7 @@ public class DoubleLinkedList {
 		if (this.lenght == 0) {throw new IllegalStateException("Empty list");}
 		
 		if (this.getLength() == 1) {
-			this.firstNode = null;
-			this.lastNode = null;
+			this.cleanList();
 		} else {
 			this.firstNode = this.getFirstNode().getNextNode();
 			this.getFirstNode().setPreviousNode(null);
@@ -190,8 +219,7 @@ public class DoubleLinkedList {
 		if (this.lenght == 0) {throw new IllegalStateException("Empty list");}
 		
 		if (this.lenght == 1) {
-			this.firstNode = null;
-			this.lastNode = null;
+			this.cleanList();
 		} else {
 			this.lastNode = this.getLastNode().getPreviousNode();
 			this.getLastNode().setNextNode(null);
@@ -211,8 +239,11 @@ public class DoubleLinkedList {
 	 * */
 	public void removeBeforeNode(Node node) throws NoSuchElementException, IndexOutOfBoundsException {
 		int indexNode = this.existsInList(node);
-		if (indexNode == -1) {throw new NoSuchElementException("The node indica does not exist in the list.");}
+
+		if (indexNode == 0) {throw new IllegalStateException("There are no items in the list");}
+		if (indexNode == -1) {throw new NoSuchElementException("The specified node does not exist in the list");}
 		if (indexNode == 1) {throw new IndexOutOfBoundsException("This attempts to delete the node before the first one, which does not exist.");}
+		
 		if (indexNode == 2) {
 			this.removeFirstNode();
 		} else {
@@ -236,8 +267,11 @@ public class DoubleLinkedList {
 	 * */
 	public void removeAfterNode(Node node) throws NoSuchElementException, IndexOutOfBoundsException {
 		int indexNode = this.existsInList(node);
-		if (indexNode == -1) {throw new NoSuchElementException("The node indica does not exist in the list.");}
+		
+		if (indexNode == 0) {throw new IllegalStateException("There are no items in the list");}
+		if (indexNode == -1) {throw new NoSuchElementException("The specified node does not exist in the list");}
 		if (indexNode == this.lenght) {throw new IndexOutOfBoundsException("This attempts to delete the node following the last one, which does not exist");}
+		
 		if (indexNode == this.getLength()-1) {
 			this.removeLastNode();
 		} else {
@@ -279,6 +313,8 @@ public class DoubleLinkedList {
 		if (nextNodeOfFirstNode != null) {
 			nextNodeOfFirstNode.setPreviousNode(newFirstNode);
 			newFirstNode.setNextNode(nextNodeOfFirstNode);
+		} else {
+			this.lastNode = newFirstNode;
 		}
 		
 		this.firstNode = newFirstNode;
