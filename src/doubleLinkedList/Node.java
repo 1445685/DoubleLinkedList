@@ -16,7 +16,7 @@ public class Node<T> {
 	/**
 	 * Build a new node with only the node value
 	 * 
-	 * @param value Value that the node will have
+	 * @param value Generic value that the node will have
 	 * */
 	public Node(T value) {
 		this.value = value;
@@ -24,7 +24,7 @@ public class Node<T> {
 	/**
 	 * Build a node by setting its value and the reference to the previous node.
 	 * 
-	 * @param value Value contained in the node
+	 * @param value Generic value contained in the node
 	 * @param previous Node previous to the node being created
 	 * */
 	public Node(T value, Node<T> previous) {
@@ -32,9 +32,9 @@ public class Node<T> {
 		this.previous = previous;
 	}
 	/**
-	 * Create a node with a value and references to both the next node and the previous node.
+	 * Create a node with a generic value and references to both the next node and the previous node.
 	 * 
-	 * @param value Value contained in the node
+	 * @param value Generic value contained in the node
 	 * @param previous Node previous to the node being created
 	 * @param next Node next to the node being created
 	 * */
