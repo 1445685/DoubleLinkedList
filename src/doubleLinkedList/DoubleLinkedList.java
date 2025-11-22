@@ -8,13 +8,13 @@ import java.util.NoSuchElementException;
  * 
  * @author no_$ignal_here
  * 
- * @version 0.5
+ * @version 0.6
  * */
 
-public class DoubleLinkedList {
+public class DoubleLinkedList<T> {
 	private int lenght = 0;
-	private Node firstNode = null;
-	private Node lastNode = null;
+	private Node<T> firstNode = null;
+	private Node<T> lastNode = null;
 
 	// ------ constructors
 	/**
@@ -26,7 +26,7 @@ public class DoubleLinkedList {
 	 * 
 	 * @param firstNode The first node in the list
 	 * */
-	public DoubleLinkedList(Node firstNode) {
+	public DoubleLinkedList(Node<T> firstNode) {
 		this.firstNode = firstNode;
 		this.lastNode = firstNode;
 		this.lenght++;
@@ -36,8 +36,8 @@ public class DoubleLinkedList {
 	 * 
 	 * @param valueValue contained in the first node
 	 * */
-	public DoubleLinkedList(int value) {
-		this(new Node(value));
+	public DoubleLinkedList(T value) {
+		this(new Node<T>(value));
 	}
 
 	// ------ methods
@@ -50,11 +50,11 @@ public class DoubleLinkedList {
 	 *  If the node does not exist in the list, returns -1;
 	 *  If the list is empty, return 0.
 	 * */
-	private int existsInList(Node node) {
+	private int existsInList(Node<T> node) {
 		if (this.lenght == 0) {return 0;}
 		
 		int index = 1;
-		Node aux = this.getFirstNode();
+		Node<T> aux = this.getFirstNode();
 		
 		while (index <= this.getLength()) {
 			if(aux.equals(node)) {return index;}
@@ -78,7 +78,7 @@ public class DoubleLinkedList {
 	 * 
 	 * @param node Node that will initialize the list
 	 * */
-	public void initializeList(Node node) {
+	public void initializeList(Node<T> node) {
 		node.setNextNode(null);
 		node.setPreviousNode(null);
 		
@@ -100,7 +100,7 @@ public class DoubleLinkedList {
 	 * 
 	 * @return Nothing at the moment
 	 * */
-	public void insertFirstNode(Node newNode) {
+	public void insertFirstNode(Node<T> newNode) {
 		if (this.emptyList()) {
 			this.initializeList(newNode);
 		} else {
@@ -118,7 +118,7 @@ public class DoubleLinkedList {
 	 * 
 	 * @return Nothing at the moment
 	 * */
-	public void insertLastNode(Node newNode) {
+	public void insertLastNode(Node<T> newNode) {
 		if (this.emptyList()) {
 			this.initializeList(newNode);
 		} else {
@@ -139,7 +139,7 @@ public class DoubleLinkedList {
 	 * 
 	 * @throws NoSuchElementException Exception indicating that the node used as a reference does not exist in the list
 	 * */
-	public void insertBeforeNode(Node node, Node newNode) throws NoSuchElementException, IllegalStateException {
+	public void insertBeforeNode(Node<T> node, Node<T> newNode) throws NoSuchElementException, IllegalStateException {
 		int indexNode = this.existsInList(node);
 		
 		if (indexNode == 0) {throw new IllegalStateException("There are no items in the list");}
@@ -148,7 +148,7 @@ public class DoubleLinkedList {
 		if (indexNode == 1) {
 			this.insertFirstNode(newNode);
 		} else {
-			Node previousNode = node.getPreviousNode();
+			Node<T> previousNode = node.getPreviousNode();
 			
 			newNode.setNextNode(node);
 			newNode.setPreviousNode(previousNode);
@@ -169,7 +169,7 @@ public class DoubleLinkedList {
 	 * 
 	 * @throws NoSuchElementException Exception indicating that the node used as a reference does not exist in the list
 	 * */
-	public void insertAfterNode(Node node, Node newNode) throws NoSuchElementException, IllegalStateException {
+	public void insertAfterNode(Node<T> node, Node<T> newNode) throws NoSuchElementException, IllegalStateException {
 		int indexNode = this.existsInList(node);
 
 		if (indexNode == 0) {throw new IllegalStateException("There are no items in the list");}
@@ -178,7 +178,7 @@ public class DoubleLinkedList {
 		if (indexNode == this.getLength()) {
 			this.insertLastNode(newNode);
 		} else {
-			Node nextNode = node.getNextNode();
+			Node<T> nextNode = node.getNextNode();
 			
 			newNode.setNextNode(nextNode);
 			newNode.setPreviousNode(node);
@@ -237,7 +237,7 @@ public class DoubleLinkedList {
 	 * @throws NoSuchElementException Exception indicating that the node to be deleted does not exist in the list
 	 * @throws IndexOutOfBoundsException If the first node is passed as a reference, an exception will be raised because there is no node preceding it.
 	 * */
-	public void removeBeforeNode(Node node) throws NoSuchElementException, IndexOutOfBoundsException {
+	public void removeBeforeNode(Node<T> node) throws NoSuchElementException, IndexOutOfBoundsException {
 		int indexNode = this.existsInList(node);
 
 		if (indexNode == 0) {throw new IllegalStateException("There are no items in the list");}
@@ -247,7 +247,7 @@ public class DoubleLinkedList {
 		if (indexNode == 2) {
 			this.removeFirstNode();
 		} else {
-			Node previousNode = node.getPreviousNode().getPreviousNode();
+			Node<T> previousNode = node.getPreviousNode().getPreviousNode();
 			
 			node.setPreviousNode(previousNode);
 			previousNode.setNextNode(node);
@@ -265,7 +265,7 @@ public class DoubleLinkedList {
 	 * @throws NoSuchElementException Exception indicating that the node to be deleted does not exist in the list
 	 * @throws IndexOutOfBoundsException If the last node is passed as a reference, an exception is raised because an attempt is made to delete a node that does not exist
 	 * */
-	public void removeAfterNode(Node node) throws NoSuchElementException, IndexOutOfBoundsException {
+	public void removeAfterNode(Node<T> node) throws NoSuchElementException, IndexOutOfBoundsException {
 		int indexNode = this.existsInList(node);
 		
 		if (indexNode == 0) {throw new IllegalStateException("There are no items in the list");}
@@ -275,7 +275,7 @@ public class DoubleLinkedList {
 		if (indexNode == this.getLength()-1) {
 			this.removeLastNode();
 		} else {
-			Node nextNode = node.getNextNode().getNextNode();
+			Node<T> nextNode = node.getNextNode().getNextNode();
 			
 			node.setNextNode(nextNode);
 			nextNode.setPreviousNode(node);
@@ -297,15 +297,15 @@ public class DoubleLinkedList {
 	 * 
 	 * @return Reference to the first node of the list
 	 * */
-	public Node getFirstNode() {return this.firstNode;}
+	public Node<T> getFirstNode() {return this.firstNode;}
 	/**
 	 * Modify the first node in the list
 	 * 
 	 * @param newFirstNode The node that will replace the first node in the list
 	 * */
-	public void setFirstNode(Node newFirstNode) {
+	public void setFirstNode(Node<T> newFirstNode) {
 		// Reference to the second node in the list or to null
-		Node nextNodeOfFirstNode = this.getFirstNode().getNextNode();
+		Node<T> nextNodeOfFirstNode = this.getFirstNode().getNextNode();
 		
 		//  Modify the previous and next node references if there is a second node in the list.
 		//  If there is no second node in the list, then the reference to lastNode must also be
@@ -325,15 +325,15 @@ public class DoubleLinkedList {
 	 * 
 	 * @return Reference to the last node of the list
 	 * */
-	public Node getLastNode() {return this.lastNode;}
+	public Node<T> getLastNode() {return this.lastNode;}
 	/**
 	 * Modify the last node in the list
 	 * 
 	 * @param newLastNode The node that will replace the last node in the list
 	 * */
-	public void setLastNode(Node newLastNode) {
+	public void setLastNode(Node<T> newLastNode) {
 		// Reference to the penultimate node in the list
-		Node previousNodeOfLastNode = this.getLastNode().getPreviousNode();
+		Node<T> previousNodeOfLastNode = this.getLastNode().getPreviousNode();
 		
 		//  If there is a penultimate node, then the previous and next node references are modified. 
 		//  If there is no penultimate node, then the list has only one node and the firstNode 
@@ -371,13 +371,13 @@ public class DoubleLinkedList {
 	public boolean equals(Object otherObject) {
 		if (this == otherObject) {return true;}
 		if (otherObject == null) {return false;}
-		if (!(otherObject instanceof DoubleLinkedList other)) {return false;}
+		if (!(otherObject instanceof DoubleLinkedList<?> other)) {return false;}
 		if (this.lenght != other.getLength()) {return false;}
 		
 		int index = 0;
 		
-		Node auxNode = this.firstNode;
-		Node otherActualNode = other.getFirstNode();
+		Node<?> auxNode = this.firstNode;
+		Node<?> otherActualNode = other.getFirstNode();
 		
 		while (index < this.lenght) {
 			if (!auxNode.equals(otherActualNode)) {return false;}

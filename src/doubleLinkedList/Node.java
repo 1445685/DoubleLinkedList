@@ -5,7 +5,7 @@ package doubleLinkedList;
  * 
  * @author no_$ignal_here
  * 
- * @version 0.5
+ * @version 0.6
  * */
 
 public class Node<T> {
